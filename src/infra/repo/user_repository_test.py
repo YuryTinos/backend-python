@@ -2,6 +2,7 @@
 
 from faker import Faker
 
+from src.infra.entities import User as UserModel
 from src.infra.config.db_config import DBConnectionHandler
 from .user_repository import UserRepository
 
@@ -11,7 +12,7 @@ db_connection_handle = DBConnectionHandler()
 
 
 def test_insert_user():
-    """Should Unsert User"""
+    """Should Insert User"""
 
     name = faker.name()
     password = faker.word()
@@ -28,3 +29,27 @@ def test_insert_user():
     assert new_user.id == query_user.id
     assert new_user.name == query_user.name
     assert new_user.password == query_user.password
+
+
+def test_select_user():
+    """Should Select a User in Users table and comapare it"""
+
+    user_id = faker.random_number(digits=5)
+    name = faker.name()
+    password = faker.word()
+    data = UserModel(id=user_id, name=name, password=password)
+
+    engine = db_connection_handle.get_engine()
+    engine.execute(
+        f"INSERT INTO users (id, name, password) VALUES ('{user_id}', '{name}', '{password}')"
+    )
+
+    query_user1 = user_repository.select_user(user_id=user_id)
+    query_user2 = user_repository.select_user(name=name)
+    query_user3 = user_repository.select_user(user_id=user_id, name=name)
+
+    assert data in query_user1
+    assert data in query_user2
+    assert data in query_user3
+
+    engine.execute(f"DELETE FROM users WHERE id='{user_id}'")
