@@ -81,5 +81,3 @@ class UserRepository:
             raise
         finally:
             db_connection.session.close()
-
-        return None
