@@ -6,13 +6,13 @@ from src.infra.config import Base
 class AnimalTypes(enum.Enum):
     """Defining Animals Types"""
 
-    dog = "dog"
-    cat = "cat"
-    fish = "fish"
-    turtle = "turtle"
+    DOG = "dog"
+    CAT = "cat"
+    FISH = "fish"
+    TURTLE = "turtle"
 
 
-class Pets(Base):
+class Pet(Base):
     """Pets Entity"""
 
     __tablename__ = "pets"
@@ -25,3 +25,15 @@ class Pets(Base):
 
     def __rep__(self):
         return f"Pets [name={self.name}, specie={self.species}, user_id={self.user_id}]"
+
+    def __eq__(self, other):
+        if (
+            self.id == other.id
+            and self.name == other.name
+            and self.species == other.species
+            and self.age == other.age
+            and self.user_id == other.user_id
+        ):
+            return True
+
+        return False
