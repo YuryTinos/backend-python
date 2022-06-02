@@ -10,15 +10,15 @@ repos:
     hooks:
       - id: flake8
         stages: [commit]
-  # - repo: local
-  #   hooks:
-  #     - id: pytest
-  #       name: pytest
-  #       language: system
-  #       entry: bash -c '.env/bin/pytest -v -s; git add storage.db'
-  #       always_run: true
-  #       pass_filenames: false
-  #       stages: [commit]
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        language: system
+        entry: bash -c '.env/bin/pytest -v -s'
+        always_run: true
+        pass_filenames: false
+        stages: [commit]
   - repo: local
     hooks:
       - id: requirements
